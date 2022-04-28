@@ -1,0 +1,67 @@
+version: '3.2'
+
+
+
+
+services:
+
+
+
+
+    mysql:
+        # https://hub.docker.com/_/mysql
+        #image: mysql:8.0.28-debian
+        image: mysql:latest
+        hostname: mysql
+        container_name: mysql
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: ${ZMYSQL_PASSWORD}
+        volumes:
+            - mysql:/var/lib/mysql
+        restart: unless-stopped
+
+
+
+
+    phpmyadmin:
+        # https://www.howtogeek.com/devops/how-to-run-phpmyadmin-in-a-docker-container/
+        # https://itisgood.ru/2020/07/09/docker-compose-dlja-mysql-s-phpmyadmin/
+        # https://hub.docker.com/_/phpmyadmin
+        image: phpmyadmin/phpmyadmin:5.1.3
+        hostname: phpmyadmin
+        container_name: phpmyadmin
+        ports:
+            - 9001:80
+        environment:
+            PMA_HOST: ${ZMYSQL_HOST}
+            PMA_USER: ${ZMYSQL_USER}
+            PMA_PASSWORD: ${ZMYSQL_PASSWORD}
+
+        volumes:
+            - ./config.user.inc.php:/etc/phpmyadmin/config.user.inc.php # Assign custom options here
+        restart: unless-stopped
+
+
+
+
+#   Uncomment these lines if you wish to have adminer for managing mysql
+#   adminer:
+#       # https://hub.docker.com/_/adminer
+#       image: adminer:4.8.1-standalone
+#       hostname: adminer
+#       container_name: adminer
+#       restart: unless-stopped
+#       environment:
+#           ADMINER_DEFAULT_SERVER: ${ADMINER_DEFAULT_SERVER}
+#       ports:
+#         - 9002:8080
+
+
+
+
+volumes:
+    mysql:
+        driver: local
+
