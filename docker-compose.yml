@@ -17,7 +17,7 @@ services:
         ports:
             - 3306:3306
         environment:
-            MYSQL_ROOT_PASSWORD: ${ZMYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
         volumes:
             - mysql:/var/lib/mysql
         restart: unless-stopped
@@ -35,9 +35,9 @@ services:
         ports:
             - 9001:80
         environment:
-            PMA_HOST: ${ZMYSQL_HOST}
-            PMA_USER: ${ZMYSQL_USER}
-            PMA_PASSWORD: ${ZMYSQL_PASSWORD}
+            PMA_HOST: ${MYSQL_HOST}
+            PMA_USER: ${MYSQL_USER}
+            PMA_PASSWORD: ${MYSQL_PASSWORD}
 
         volumes:
             - ./config.user.inc.php:/etc/phpmyadmin/config.user.inc.php # Assign custom options here
